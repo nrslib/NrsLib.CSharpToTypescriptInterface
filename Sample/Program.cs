@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using CSharpToTypescriptInterface;
-using CSharpToTypescriptInterface.TypeAdjuster;
 
 namespace Sample {
     class Program {
@@ -21,7 +20,7 @@ namespace Sample {
 
         private static void UsingDefault()
         {
-            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "ClassFileGenerator.dll");
+            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
             var converter = new Converter(targetDllFullPath);
             var outputs = converter.Convert(OutputText);
             foreach (var output in outputs) {
@@ -32,10 +31,10 @@ namespace Sample {
 
         private static void UsingMyAdjuster()
         {
-            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "ClassFileGenerator.dll");
+            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
             var converter = new Converter(targetDllFullPath)
             {
-                TypeAdjuster = new DefaultTypeAdjuster(),
+                TypeAdjuster = new MyAdjuster(),
             };
             var outputs = converter.Convert(OutputText);
             foreach (var output in outputs) {
@@ -46,7 +45,7 @@ namespace Sample {
 
         private static void UsingMyExtractor()
         {
-            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "ClassFileGenerator.dll");
+            var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
             var converter = new Converter(targetDllFullPath) {
                 TypeExtractor = new MyExtractor()
             };

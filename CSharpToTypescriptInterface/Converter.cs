@@ -3,6 +3,8 @@ using System.Linq;
 using ClassFileGenerator;
 using ClassFileGenerator.Core.Meta;
 using ClassFileGenerator.Core.Templates;
+using CSharpToTypescriptInterface.ItemExtractor.Field;
+using CSharpToTypescriptInterface.ItemExtractor.Property;
 using CSharpToTypescriptInterface.TypeAdjuster;
 using CSharpToTypescriptInterface.TypeSelectors;
 
@@ -12,24 +14,21 @@ namespace CSharpToTypescriptInterface {
         private readonly DllLoader dllLoader;
         private ITypeAdjuster typeAdjuster = new DefaultTypeAdjuster();
         private ITypeExtractor extractor = new EveryExtractor();
+        private IFieldExtractor fieldExtractor = new DefaultFieldExtractor();
+        private IPropertyExtractor propertyExtractor = new DefaultPropertyExtractor();
         private readonly MainDriver classGenerateDriver = new MainDriver();
+        private readonly bool containsMethod;
 
-        public Converter(string dllFullPath)
+        public Converter(string dllFullPath, bool containsMethod = false)
         {
             dllLoader = new DllLoader(dllFullPath);
+            this.containsMethod = containsMethod;
         }
 
-        public ITypeAdjuster TypeAdjuster
-        {
-            get => typeAdjuster;
-            set => typeAdjuster = value ?? throw new ArgumentNullException();
-        }
-
-        public ITypeExtractor TypeExtractor
-        {
-            get => extractor;
-            set => extractor = value ?? throw new ArgumentNullException();
-        }
+        public ITypeAdjuster TypeAdjuster { set => typeAdjuster = value ?? throw new ArgumentNullException(); }
+        public ITypeExtractor TypeExtractor { set => extractor = value ?? throw new ArgumentNullException(); }
+        public IFieldExtractor FieldExtractor { set => fieldExtractor = value ?? throw new ArgumentNullException(); }
+        public IPropertyExtractor PropertyExtractor { set => propertyExtractor = value ?? throw new ArgumentNullException(); }
 
         public T[] Convert<T>(Func<Type, string, T> predicate)
         {
@@ -51,7 +50,7 @@ namespace CSharpToTypescriptInterface {
         private InterfaceMeta ToMeta(Type type)
         {
             var meta = new InterfaceMeta(type.Namespace, type.Name);
-            var props = type.GetProperties();
+            var props = type.GetProperties().Where(propertyExtractor.IsSatisfiedBy);
 
             var fieldSetting = meta.SetupFields();
 
@@ -62,28 +61,31 @@ namespace CSharpToTypescriptInterface {
                 fieldSetting.AddField(fieldName, field => field.SetType(typeText));
             }
 
-            var fields = type.GetFields().Where(x => x.IsPublic);
+            var fields = type.GetFields().Where(fieldExtractor.IsSatisfiedBy);
             foreach (var fieldInfo in fields) {
                 var fieldName = toLowerCase(fieldInfo.Name);
                 var typeText = convertTypeName(fieldInfo.FieldType);
                 fieldSetting.AddField(fieldName, field => field.SetType(typeText));
             }
 
-            var methods = type.GetMethods();
-            var methodSetting = meta.SetupMethod();
-            foreach (var methodInfo in methods)
+            if (containsMethod)
             {
-                var methodName = toLowerCase(methodInfo.Name);
-                var typeText = convertTypeName(methodInfo.ReturnType);
-                var parameters = methodInfo.GetParameters();
-                methodSetting.AddMethod(methodName, method =>
+                var methods = type.GetMethods();
+                var methodSetting = meta.SetupMethod();
+                foreach (var methodInfo in methods)
                 {
-                    method.SetReturnType(typeText);
-                    foreach (var param in parameters)
+                    var methodName = toLowerCase(methodInfo.Name);
+                    var typeText = convertTypeName(methodInfo.ReturnType);
+                    var parameters = methodInfo.GetParameters();
+                    methodSetting.AddMethod(methodName, method =>
                     {
-                        method.AddArgument(param.Name, convertTypeName(param.ParameterType));
-                    }
-                });
+                        method.SetReturnType(typeText);
+                        foreach (var param in parameters)
+                        {
+                            method.AddArgument(param.Name, convertTypeName(param.ParameterType));
+                        }
+                    });
+                }
             }
 
             return meta;

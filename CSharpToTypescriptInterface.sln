@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpToTypescriptInterface
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{279C84C7-8B1B-4B43-B7BB-62D7AE27B0DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDll", "TestDll\TestDll.csproj", "{479F1B21-98E3-45DB-9F10-9445E9CB1CED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{279C84C7-8B1B-4B43-B7BB-62D7AE27B0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{279C84C7-8B1B-4B43-B7BB-62D7AE27B0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{279C84C7-8B1B-4B43-B7BB-62D7AE27B0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{479F1B21-98E3-45DB-9F10-9445E9CB1CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479F1B21-98E3-45DB-9F10-9445E9CB1CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479F1B21-98E3-45DB-9F10-9445E9CB1CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479F1B21-98E3-45DB-9F10-9445E9CB1CED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

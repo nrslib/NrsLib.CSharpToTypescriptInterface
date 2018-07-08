@@ -10,7 +10,7 @@ namespace Sample {
 
         private readonly List<ITypeConverter> converters = new List<ITypeConverter>
         {
-            new AsItIsTypeConverter(),
+            new AllAnyConverter(),
         };
 
         public string ToTypescriptType(Type type) {
