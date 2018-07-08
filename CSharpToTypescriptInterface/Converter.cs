@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using ClassFileGenerator;
 using ClassFileGenerator.Core.Meta;
 using ClassFileGenerator.Core.Templates;
@@ -35,7 +34,7 @@ namespace CSharpToTypescriptInterface {
         public T[] Convert<T>(Func<Type, string, T> predicate)
         {
             var types = dllLoader.GetTypes();
-            var targets = types.Where(x => extractor.IsSatisfiedBy(x));
+            var targets = types.Where(x => !x.Name.StartsWith("<>")).Where(x => extractor.IsSatisfiedBy(x));
             return targets
                 .Select(ConvertTypeScript)
                 .Select(tpl => predicate(tpl.Item1, tpl.Item2))
