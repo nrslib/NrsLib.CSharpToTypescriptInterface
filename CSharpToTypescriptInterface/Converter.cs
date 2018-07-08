@@ -10,13 +10,25 @@ namespace CSharpToTypescriptInterface {
     public class Converter
     {
         private readonly DllLoader dllLoader;
-        private readonly ITypeAdjuster typeAdjuster = new DefaultTypeAdjuster();
-        private readonly ITypeExtractor extractor = new EveryExtractor();
+        private ITypeAdjuster typeAdjuster = new DefaultTypeAdjuster();
+        private ITypeExtractor extractor = new EveryExtractor();
         private readonly MainDriver classGenerateDriver = new MainDriver();
 
         public Converter(string dllFullPath)
         {
             dllLoader = new DllLoader(dllFullPath);
+        }
+
+        public ITypeAdjuster TypeAdjuster
+        {
+            get => typeAdjuster;
+            set => typeAdjuster = value ?? throw new ArgumentNullException();
+        }
+
+        public ITypeExtractor TypeExtractor
+        {
+            get => extractor;
+            set => extractor = value ?? throw new ArgumentNullException();
         }
 
         public T[] Convert<T>(Func<Type, string, T> predicate)
