@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using ClassFileGenerator;
 using ClassFileGenerator.Core.Meta;
 using ClassFileGenerator.Core.Templates;
@@ -60,6 +61,30 @@ namespace CSharpToTypescriptInterface {
                 var fieldName = toLowerCase(propertyInfo.Name);
                 var typeText = convertTypeName(propertyInfo.PropertyType);
                 fieldSetting.AddField(fieldName, field => field.SetType(typeText));
+            }
+
+            var fields = type.GetFields().Where(x => x.IsPublic);
+            foreach (var fieldInfo in fields) {
+                var fieldName = toLowerCase(fieldInfo.Name);
+                var typeText = convertTypeName(fieldInfo.FieldType);
+                fieldSetting.AddField(fieldName, field => field.SetType(typeText));
+            }
+
+            var methods = type.GetMethods();
+            var methodSetting = meta.SetupMethod();
+            foreach (var methodInfo in methods)
+            {
+                var methodName = toLowerCase(methodInfo.Name);
+                var typeText = convertTypeName(methodInfo.ReturnType);
+                var parameters = methodInfo.GetParameters();
+                methodSetting.AddMethod(methodName, method =>
+                {
+                    method.SetReturnType(typeText);
+                    foreach (var param in parameters)
+                    {
+                        method.AddArgument(param.Name, convertTypeName(param.ParameterType));
+                    }
+                });
             }
 
             return meta;
