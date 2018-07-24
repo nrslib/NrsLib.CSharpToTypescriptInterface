@@ -4,17 +4,24 @@ using System.Linq;
 using NrsLib.CSharpToTypescriptInterface.TypeAdjuster;
 using NrsLib.CSharpToTypescriptInterface.TypeAdjuster.TypeConverter;
 
-namespace Sample {
-    class MyAdjuster : ITypeAdjuster {
+namespace CSharpToTypescriptInterface.TypeAdjuster {
+    public class DefaultTypeAdjuster : ITypeAdjuster {
         private readonly Dictionary<Type, ITypeConverter> cache = new Dictionary<Type, ITypeConverter>();
 
         private readonly List<ITypeConverter> converters = new List<ITypeConverter>
         {
-            new AllAnyConverter(),
+            new StringTypeConverter(),
+            new NumberTypeConverter(),
+            new ArrayTypeConverter(),
+            new NullableTypeConverter(),
+            new AnyTypeConverter(),
+            new AsItIsTypeConverter(),
         };
 
-        public string ToTypescriptType(Type type) {
-            if (!cache.TryGetValue(type, out var converter)) {
+        public string ToTypescriptType(Type type)
+        {
+            if (!cache.TryGetValue(type, out var converter))
+            {
                 converter = converters.First(x => x.IsSatisfiedBy(type));
                 cache[type] = converter;
             }
@@ -22,7 +29,8 @@ namespace Sample {
             return converter.ConvertType(type, this);
         }
 
-        public void AddConverter(ITypeConverter converter) {
+        public void AddConverter(ITypeConverter converter)
+        {
             this.converters.Insert(0, converter);
         }
     }

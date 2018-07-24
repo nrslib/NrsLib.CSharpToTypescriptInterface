@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using CSharpToTypescriptInterface;
+using NrsLib.CSharpToTypescriptInterface;
 
 namespace Sample {
     class Program {

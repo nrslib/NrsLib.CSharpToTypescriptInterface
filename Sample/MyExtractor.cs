@@ -1,5 +1,5 @@
 ﻿using System;
-using CSharpToTypescriptInterface.TypeSelectors;
+using NrsLib.CSharpToTypescriptInterface.TypeSelectors;
 
 namespace Sample {
     class MyExtractor : ITypeExtractor {

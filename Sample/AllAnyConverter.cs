@@ -1,6 +1,6 @@
 ﻿using System;
-using CSharpToTypescriptInterface.TypeAdjuster;
-using CSharpToTypescriptInterface.TypeAdjuster.TypeConverter;
+using NrsLib.CSharpToTypescriptInterface.TypeAdjuster;
+using NrsLib.CSharpToTypescriptInterface.TypeAdjuster.TypeConverter;
 
 namespace Sample {
     class AllAnyConverter : ITypeConverter {

@@ -57,9 +57,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSharpToTypescriptInterface\CSharpToTypescriptInterface.csproj">
+    <ProjectReference Include="..\NrsLib.CSharpToTypescriptInterface\NrsLib.CSharpToTypescriptInterface.csproj">
       <Project>{e32f254e-6813-48db-8467-cc9bfa97b8aa}</Project>
-      <Name>CSharpToTypescriptInterface</Name>
+      <Name>NrsLib.CSharpToTypescriptInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestDll\TestDll.csproj">
       <Project>{479f1b21-98e3-45db-9f10-9445e9cb1ced}</Project>
