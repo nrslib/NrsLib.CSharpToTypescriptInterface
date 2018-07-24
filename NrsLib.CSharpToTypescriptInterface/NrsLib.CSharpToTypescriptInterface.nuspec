@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.0.0</version>
+    <title>$title$</title>
+    <authors>nrs</authors>
+    <owners>nrs</owners>
+    <licenseUrl>https://raw.githubusercontent.com/nrslib/NrsLib.CSharpToTypescriptInterface/master/LICENSE</licenseUrl>
+    <projectUrl>https://nrslib.com/csharp-to-typescript-interface/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>C# to TypeScript interface Convert library. You can convert from dll file or assembly. You can select extraction conditions and conversion methods.</description>
+    <releaseNotes>Released.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>C#, Typescript, Converter</tags>
+  </metadata>
+</package>
