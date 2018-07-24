@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
-using ClassFileGenerator;
-using ClassFileGenerator.Core.Meta;
-using ClassFileGenerator.Core.Templates;
 using CSharpToTypescriptInterface.ItemExtractor.Field;
 using CSharpToTypescriptInterface.ItemExtractor.Property;
+using CSharpToTypescriptInterface.Loader;
 using CSharpToTypescriptInterface.TypeAdjuster;
 using CSharpToTypescriptInterface.TypeSelectors;
+using NrsLib.ClassFileGenerator;
+using NrsLib.ClassFileGenerator.Core.Meta;
+using NrsLib.ClassFileGenerator.Core.Templates;
 
 namespace CSharpToTypescriptInterface {
     public class Converter
     {
-        private readonly DllLoader dllLoader;
         private ITypeAdjuster typeAdjuster = new DefaultTypeAdjuster();
         private ITypeExtractor extractor = new EveryExtractor();
         private IFieldExtractor fieldExtractor = new DefaultFieldExtractor();
@@ -19,9 +19,8 @@ namespace CSharpToTypescriptInterface {
         private readonly MainDriver classGenerateDriver = new MainDriver();
         private readonly bool containsMethod;
 
-        public Converter(string dllFullPath, bool containsMethod = false)
+        public Converter(bool containsMethod = false)
         {
-            dllLoader = new DllLoader(dllFullPath);
             this.containsMethod = containsMethod;
         }
 
@@ -30,9 +29,15 @@ namespace CSharpToTypescriptInterface {
         public IFieldExtractor FieldExtractor { set => fieldExtractor = value ?? throw new ArgumentNullException(); }
         public IPropertyExtractor PropertyExtractor { set => propertyExtractor = value ?? throw new ArgumentNullException(); }
 
-        public T[] Convert<T>(Func<Type, string, T> predicate)
+        public T[] Convert<T>(string dllFullPath, Func<Type, string, T> predicate)
         {
-            var types = dllLoader.GetTypes();
+            var  dllLoader = new FileDllLoader(dllFullPath);
+            return Convert(dllLoader, predicate);
+        }
+
+        public T[] Convert<T>(IDllLoader loader, Func<Type, string, T> predicate)
+        {
+            var types = loader.GetTypes();
             var targets = types.Where(x => !x.Name.StartsWith("<>")).Where(x => extractor.IsSatisfiedBy(x));
             return targets
                 .Select(ConvertTypeScript)

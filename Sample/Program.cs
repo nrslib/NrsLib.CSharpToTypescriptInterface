@@ -21,8 +21,8 @@ namespace Sample {
         private static void UsingDefault()
         {
             var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
-            var converter = new Converter(targetDllFullPath);
-            var outputs = converter.Convert(OutputText);
+            var converter = new Converter();
+            var outputs = converter.Convert(targetDllFullPath, OutputText);
             foreach (var output in outputs) {
                 Console.WriteLine("=================================");
                 Console.WriteLine(output);
@@ -32,11 +32,11 @@ namespace Sample {
         private static void UsingMyAdjuster()
         {
             var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
-            var converter = new Converter(targetDllFullPath)
+            var converter = new Converter
             {
                 TypeAdjuster = new MyAdjuster(),
             };
-            var outputs = converter.Convert(OutputText);
+            var outputs = converter.Convert(targetDllFullPath, OutputText);
             foreach (var output in outputs) {
                 Console.WriteLine("=================================");
                 Console.WriteLine(output);
@@ -46,10 +46,10 @@ namespace Sample {
         private static void UsingMyExtractor()
         {
             var targetDllFullPath = Path.Combine(Environment.CurrentDirectory, "TestDll.dll");
-            var converter = new Converter(targetDllFullPath) {
+            var converter = new Converter() {
                 TypeExtractor = new MyExtractor()
             };
-            var outputs = converter.Convert(OutputText);
+            var outputs = converter.Convert(targetDllFullPath, OutputText);
             foreach (var output in outputs) {
                 Console.WriteLine("=================================");
                 Console.WriteLine(output);

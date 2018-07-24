@@ -16,6 +16,9 @@ namespace TestDll
         protected int protectedProperty { get; }
         private int privateProperty { get; }
 
+        public int? Nullable { get; }
+        public object AnyType { get; }
+
         public int PublicMethod()
         {
             return 0;

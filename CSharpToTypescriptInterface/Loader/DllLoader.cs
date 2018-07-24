@@ -2,12 +2,12 @@
 using System.IO;
 using System.Reflection;
 
-namespace CSharpToTypescriptInterface {
-    public class DllLoader
+namespace CSharpToTypescriptInterface.Loader {
+    public class FileDllLoader : IDllLoader
     {
         private readonly string fullPath;
 
-        public DllLoader(string fullPath)
+        public FileDllLoader(string fullPath)
         {
             if (string.IsNullOrEmpty(fullPath))
             {

@@ -12,6 +12,8 @@ namespace CSharpToTypescriptInterface.TypeAdjuster {
             new StringTypeConverter(),
             new NumberTypeConverter(),
             new ArrayTypeConverter(),
+            new NullableTypeConverter(),
+            new AnyTypeConverter(),
             new AsItIsTypeConverter(),
         };
 
